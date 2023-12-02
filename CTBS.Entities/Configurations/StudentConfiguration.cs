@@ -13,7 +13,6 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
 {
 	public void Configure(EntityTypeBuilder<Student> builder)
 	{
-		builder.HasKey(s => s.Id);
 		builder.Property(s => s.FirstName)
 			.IsRequired();
 		builder.Property(s => s.MiddleName)

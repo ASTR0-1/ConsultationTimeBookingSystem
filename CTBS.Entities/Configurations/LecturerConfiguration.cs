@@ -8,7 +8,6 @@ public class LecturerConfiguration : IEntityTypeConfiguration<Lecturer>
 {
 	public void Configure(EntityTypeBuilder<Lecturer> builder)
 	{
-		builder.HasKey(l => l.Id);
 		builder.Property(l => l.FirstName)
 			.IsRequired();
 		builder.Property(l => l.MiddleName)
