@@ -1,17 +1,18 @@
 ﻿using CTBS.Entities.Configurations;
 using CTBS.Entities.Helpers;
 using CTBS.Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CTBS.Entities;
-public class ApplicationContext : IdentityDbContext
+public class ApplicationContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
 {
-	public DbSet<Appointment> Appointments { get; set; }
-	public DbSet<Lecturer> Lecturers { get; set; }
-	public DbSet<QuestionsCategory> QuestionsCategories { get; set; }
-	public DbSet<Student> Students { get; set; }
-	public DbSet<Subject> Subjects { get; set; }
+	public DbSet<Appointment> Appointments { get; set; } = null!;
+	public DbSet<Lecturer> Lecturers { get; set; } = null!;
+	public DbSet<QuestionsCategory> QuestionsCategories { get; set; } = null!;
+	public DbSet<Student> Students { get; set; } = null!;
+	public DbSet<Subject> Subjects { get; set; } = null!;
 
 	public ApplicationContext(DbContextOptions options)
 		: base(options)

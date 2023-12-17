@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using CTBS.Contracts;
 using CTBS.Entities.DataTransferObjects.Authentication;
+using CTBS.Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,12 +11,12 @@ namespace CTBS.API.Utility;
 
 public class AuthenticationManager : IAuthenticationManager
 {
-	private readonly UserManager<IdentityUser<int>> _userManager;
+	private readonly UserManager<User> _userManager;
 	private readonly IConfiguration _configuration;
 	
-	private IdentityUser<int>? _user;
+	private User? _user;
 
-	public AuthenticationManager(UserManager<IdentityUser<int>> userManager, IConfiguration configuration)
+	public AuthenticationManager(UserManager<User> userManager, IConfiguration configuration)
 	{
 		_userManager = userManager;
 		_configuration = configuration;

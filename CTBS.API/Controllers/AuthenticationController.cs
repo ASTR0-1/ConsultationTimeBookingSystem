@@ -13,62 +13,31 @@ namespace CTBS.API.Controllers;
 public class AuthenticationController : ControllerBase
 {
 	private readonly IMapper _mapper;
-	private readonly UserManager<Student> _studentManager;
-	private readonly UserManager<Lecturer> _lecturerManager;
+	private readonly UserManager<User> _userManager;
 	private readonly IAuthenticationManager _authManager;
 
-	public AuthenticationController(IMapper mapper, UserManager<Student> studentManager, UserManager<Lecturer> lecturerManager, IAuthenticationManager authManager)
+	public AuthenticationController(IMapper mapper, UserManager<User> userManager, IAuthenticationManager authManager)
 	{
 		_mapper = mapper;
-		_studentManager = studentManager;
-		_lecturerManager = lecturerManager;
+		_userManager = userManager;
 		_authManager = authManager;
 	}
 
 	[HttpPost("register")]
 	public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistrationDto)
 	{
-		switch (userForRegistrationDto.UserType)
+		var user = _mapper.Map<User>(userForRegistrationDto);
+		var result = await _userManager.CreateAsync(user, userForRegistrationDto.Password);
+
+		if (!result.Succeeded)
 		{
-			case UserType.Lecturer:
-				{
-					var lecturer = _mapper.Map<Lecturer>(userForRegistrationDto);
-					var result = await _lecturerManager.CreateAsync(lecturer, userForRegistrationDto.Password);
+			foreach (var error in result.Errors)
+				ModelState.TryAddModelError(error.Code, error.Description);
 
-					if (!result.Succeeded)
-					{
-						foreach (var error in result.Errors)
-							ModelState.TryAddModelError(error.Code, error.Description);
-
-						return BadRequest(ModelState);
-					}
-
-					await _lecturerManager.AddToRoleAsync(lecturer, userForRegistrationDto.UserType.ToString());
-
-					break;
-				}
-			case UserType.Student:
-				{
-					var student = _mapper.Map<Student>(userForRegistrationDto);
-					var result = await _studentManager.CreateAsync(student, userForRegistrationDto.Password);
-
-					if (!result.Succeeded)
-					{
-						foreach (var error in result.Errors)
-							ModelState.TryAddModelError(error.Code, error.Description);
-
-						return BadRequest(ModelState);
-					}
-
-					await _studentManager.AddToRoleAsync(student, userForRegistrationDto.UserType.ToString());
-
-					break;
-				}
-			default:
-				{
-					throw new KeyNotFoundException($"User type {userForRegistrationDto.UserType} not found.");
-				}
+			return BadRequest(ModelState);
 		}
+
+		await _userManager.AddToRoleAsync(user, userForRegistrationDto.UserType.ToString());
 
 		return StatusCode(201);
 	}

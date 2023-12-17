@@ -2,12 +2,8 @@
 
 namespace CTBS.Entities.Models;
 
-public class Lecturer : IdentityUser<int>
+public class Lecturer : User
 {
-	public string FirstName { get; set; }
-	public string MiddleName { get; set; }
-	public string LastName { get; set; }
-
 	public int SubjectId { get; set; }
 	public Subject Subject { get; set; }
 

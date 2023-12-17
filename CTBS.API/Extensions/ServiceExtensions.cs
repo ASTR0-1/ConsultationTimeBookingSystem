@@ -2,6 +2,7 @@
 using System.Text;
 using CTBS.Contracts;
 using CTBS.Entities;
+using CTBS.Entities.Models;
 using CTBS.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,7 @@ public static class ServiceExtensions
 
 	public static void ConfigureIdentity(this IServiceCollection services)
 	{
-		var builder = services.AddIdentityCore<IdentityUser<int>>(opts =>
+		var builder = services.AddIdentityCore<User>(opts =>
 		{
 			opts.Password.RequireDigit = true;
 			opts.Password.RequireLowercase = false;
@@ -32,7 +33,7 @@ public static class ServiceExtensions
 			opts.User.RequireUniqueEmail = true;
 		});
 
-		builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+		builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole<int>), builder.Services);
 		builder.AddEntityFrameworkStores<ApplicationContext>()
 			.AddDefaultTokenProviders();
 	}
