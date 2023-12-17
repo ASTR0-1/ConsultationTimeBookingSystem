@@ -6,6 +6,7 @@ namespace CTBS.Contracts;
 
 public interface IAppointmentRepository
 {
+	Task<Appointment?> GetAppointmentAsync(int appointmentId, bool trackChanges);
 	Task<PagedList<Appointment>> GetLecturerAppointmentsAsync(int lecturerId, RequestParameters requestParameters,
 		bool trackChanges);
 	Task<PagedList<Appointment>> GetStudentAppointmentAsync(int studentId, RequestParameters requestParameters,

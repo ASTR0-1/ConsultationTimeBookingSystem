@@ -1,9 +1,9 @@
-﻿using CTBS.Entities.DataTransferObjects;
+﻿using CTBS.Entities.DataTransferObjects.Authentication;
 
 namespace CTBS.Contracts;
 
 public interface IAuthenticationManager
 {
 	Task<bool> ValidateUserAsync(UserForAuthenticationDto userForAuthentication);
-	Task<string> CreateToken();
+	Task<string> CreateTokenAsync();
 }
