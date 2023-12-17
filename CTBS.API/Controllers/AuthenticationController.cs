@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CTBS.API.Controllers;
 
-[Route("api/Authentication")]
+[Route("api/authentication")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
@@ -23,6 +23,12 @@ public class AuthenticationController : ControllerBase
 		_authManager = authManager;
 	}
 
+	/// <summary>
+	/// Registers user from provided user data transfer object.
+	/// </summary>
+	/// <param name="userForRegistrationDto">Data transfer object to create the user</param>
+	/// <returns>Created result.</returns>
+	/// <remarks>HTTP POST: api/Authentication/Register</remarks>
 	[HttpPost("register")]
 	public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistrationDto)
 	{
@@ -42,6 +48,11 @@ public class AuthenticationController : ControllerBase
 		return StatusCode(201);
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="user"></param>
+	/// <returns></returns>
 	[HttpPost("login")]
 	public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
 	{

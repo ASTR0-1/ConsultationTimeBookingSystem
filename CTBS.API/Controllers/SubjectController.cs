@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CTBS.API.Controllers;
 
-[Route("api/Subjects")]
+[Route("api/subjects")]
 [ApiController]
 [Authorize(Roles = "Lecturer")]
 public class SubjectController : ControllerBase
@@ -27,7 +27,7 @@ public class SubjectController : ControllerBase
 	/// </summary>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
 	/// <returns>Paginated subjects ordered by name ascending.</returns>
-	/// <remarks>HTTP GET: api/Subjects</remarks>
+	/// <remarks>HTTP GET: api/subjects</remarks>
 	[HttpGet]
 	public async Task<IActionResult> GetAll([FromQuery] RequestParameters requestParameters)
 	{
@@ -49,7 +49,7 @@ public class SubjectController : ControllerBase
 	/// </summary>
 	/// <param name="subjectDto">Data transfer object to create the subject.</param>
 	/// <returns>No content result.</returns>
-	/// <remarks>HTTP POST: api/Subjects</remarks>
+	/// <remarks>HTTP POST: api/subjects</remarks>
 	[HttpPost]
 	public async Task<IActionResult> CreateSubject(CreateSubjectDto subjectDto)
 	{
@@ -73,7 +73,7 @@ public class SubjectController : ControllerBase
 	/// </summary>
 	/// <param name="subjectId">The subject id to delete.</param>
 	/// <returns>No content result.</returns>
-	/// <remarks>HTTP DELETE: api/Subjects/{subjectId}</remarks>
+	/// <remarks>HTTP DELETE: api/subjects/{subjectId}</remarks>
 	[HttpDelete("{subjectId:int}")]
 	public async Task<IActionResult> DeleteSubject(int subjectId)
 	{

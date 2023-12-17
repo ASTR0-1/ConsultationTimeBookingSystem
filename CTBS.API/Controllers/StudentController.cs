@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CTBS.API.Controllers;
 
-[Route("api/Students")]
+[Route("api/students")]
 [ApiController]
 [Authorize]
 public class StudentController : ControllerBase
@@ -22,6 +22,7 @@ public class StudentController : ControllerBase
 	/// </summary>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
 	/// <returns>Paginated students ordered by first and last name ascending.</returns>
+	/// <remarks>HTTP GET: api/students</remarks>
 	[HttpGet]
 	public async Task<IActionResult> GetAll([FromQuery] RequestParameters requestParameters)
 	{
@@ -43,7 +44,7 @@ public class StudentController : ControllerBase
 	/// </summary>
 	/// <param name="studentId">Student id to retrieve information.</param>
 	/// <returns>Student by provided id.</returns>
-	/// <remarks>HTTP GET: api/Students/{studentId}</remarks>
+	/// <remarks>HTTP GET: api/students/{studentId}</remarks>
 	[HttpGet("{studentId:int}")]
 	public async Task<IActionResult> GetById(int studentId)
 	{
@@ -66,7 +67,7 @@ public class StudentController : ControllerBase
 	/// </summary>
 	/// <param name="studentId">Student id to delete.</param>
 	/// <returns>No content result.</returns>
-	/// <remarks>HTTP DELETE: api/Students/{studentId}</remarks>
+	/// <remarks>HTTP DELETE: api/students/{studentId}</remarks>
 	[HttpDelete("{studentId:int}")]
 	public async Task<IActionResult> DeleteById(int studentId)
 	{

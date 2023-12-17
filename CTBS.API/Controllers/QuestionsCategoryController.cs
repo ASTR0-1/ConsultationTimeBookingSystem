@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CTBS.API.Controllers;
 
-[Route("api/QuestionsCategories")]
+[Route("api/questionsCategories")]
 [ApiController]
 [Authorize]
 public class QuestionsCategoryController : Controller
@@ -27,7 +27,7 @@ public class QuestionsCategoryController : Controller
 	/// </summary>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
 	/// <returns>Paginated questions categories ordered by name ascending.</returns>
-	/// <remarks>HTTP GET: api/QuestionsCategories</remarks>
+	/// <remarks>HTTP GET: api/questionsCategories</remarks>
 	[HttpGet]
 	public async Task<IActionResult> GetAll([FromQuery] RequestParameters requestParameters)
 	{
@@ -49,7 +49,7 @@ public class QuestionsCategoryController : Controller
 	/// </summary>
 	/// <param name="questionsCategoryDto">Data transfer object to create the questions category.</param>
 	/// <returns>No content result.</returns>
-	/// <remarks>HTTP POST: api/QuestionsCategories</remarks>
+	/// <remarks>HTTP POST: api/questionsCategories</remarks>
 	[HttpPost]
 	public async Task<IActionResult> CreateQuestionsCategory(CreateQuestionsCategoryDto questionsCategoryDto)
 	{
@@ -73,7 +73,7 @@ public class QuestionsCategoryController : Controller
 	/// </summary>
 	/// <param name="questionsCategoryId">The questions category id to delete.</param>
 	/// <returns>No content result.</returns>
-	/// <remarks>HTTP DELETE: api/QuestionsCategories/{questionsCategoryId}</remarks>
+	/// <remarks>HTTP DELETE: api/questionsCategories/{questionsCategoryId}</remarks>
 	[HttpDelete("{questionsCategoryId:int}")]
 	public async Task<IActionResult> DeleteQuestionsCategory(int questionsCategoryId)
 	{

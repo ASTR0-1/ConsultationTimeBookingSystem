@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CTBS.API.Controllers;
 
-[Route("api/Lecturers")]
+[Route("api/lecturers")]
 [ApiController]
 [Authorize]
 public class LecturerController : ControllerBase
@@ -22,6 +22,7 @@ public class LecturerController : ControllerBase
 	/// </summary>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
 	/// <returns>Paginated lecturers ordered by first and last name ascending.</returns>
+	/// <remarks>HTTP GET: api/lecturers</remarks>
 	[HttpGet]
 	public async Task<IActionResult> GetAll([FromQuery] RequestParameters requestParameters)
 	{
@@ -43,7 +44,7 @@ public class LecturerController : ControllerBase
 	/// </summary>
 	/// <param name="lecturerId">Lecturer id to retrieve information.</param>
 	/// <returns>Lecturer by provided id.</returns>
-	/// <remarks>HTTP GET: api/Lecturers/{lecturerId}</remarks>
+	/// <remarks>HTTP GET: api/lecturers/{lecturerId}</remarks>
 	[HttpGet("{lecturerId:int}")]
 	public async Task<IActionResult> GetById(int lecturerId)
 	{
@@ -66,7 +67,7 @@ public class LecturerController : ControllerBase
 	/// </summary>
 	/// <param name="lecturerId">Lecturer id to delete.</param>
 	/// <returns>No content result.</returns>
-	/// <remarks>HTTP DELETE: api/Lecturers/{lecturerId}</remarks>
+	/// <remarks>HTTP DELETE: api/lecturers/{lecturerId}</remarks>
 	[HttpDelete("{lecturerId:int}")]
 	public async Task<IActionResult> DeleteById(int lecturerId)
 	{

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CTBS.API.Controllers;
 
-[Route("api/Appointments")]
+[Route("api/appointments")]
 [ApiController]
 [Authorize]
 public class AppointmentController : ControllerBase
@@ -29,8 +29,8 @@ public class AppointmentController : ControllerBase
 	/// <param name="studentId">The Student Id to search for appointments.</param>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
 	/// <returns>Paginated appointments for student in ascending order.</returns>
-	/// <remarks>HTTP GET: api/Appointments/Student/{studentId}</remarks>
-	[HttpGet("Student/{studentId:int}")]
+	/// <remarks>HTTP GET: api/appointments/student/{studentId}</remarks>
+	[HttpGet("student/{studentId:int}")]
 	public async Task<IActionResult> GetStudentAppointments([Required] int studentId,
 		[FromQuery] RequestParameters requestParameters)
 	{
@@ -53,8 +53,8 @@ public class AppointmentController : ControllerBase
 	/// <param name="lecturerId">The Student Id to search for appointments.</param>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
 	/// <returns>Paginated appointments for student in ascending order.</returns>
-	/// <remarks>HTTP GET: api/Appointments/Lecturer/{lecturerId}</remarks>
-	[HttpGet("Lecturer/{lecturerId:int}")]
+	/// <remarks>HTTP GET: api/appointments/lecturer/{lecturerId}</remarks>
+	[HttpGet("lecturer/{lecturerId:int}")]
 	[Authorize(Roles = "Lecturer")]
 	public async Task<IActionResult> GetLecturerAppointments([Required] int lecturerId,
 		[FromQuery] RequestParameters requestParameters)
@@ -77,7 +77,7 @@ public class AppointmentController : ControllerBase
 	/// </summary>
 	/// <param name="appointmentDto">Data transfer object to create an appointment.</param>
 	/// <returns>No content result.</returns>
-	/// <remarks>HTTP POST: api/Appointments</remarks>
+	/// <remarks>HTTP POST: api/appointments</remarks>
 	[HttpPost]
 	[Authorize(Roles = "Student")]
 	public async Task<IActionResult> CreateAppointment(CreateAppointmentDto appointmentDto)
@@ -103,7 +103,7 @@ public class AppointmentController : ControllerBase
 	/// <param name="appointmentId">An appointment id to update.</param>
 	/// <param name="appointmentDto">An appointment data transfer object with appointment state.</param>
 	/// <returns>No content result.</returns>
-	/// <remarks>HTTP PATCH: api/Appointments/{appointmentId}</remarks>
+	/// <remarks>HTTP PATCH: api/appointments/{appointmentId}</remarks>
 	[HttpPatch("{appointmentId:int}")]
 	public async Task<IActionResult> UpdateAppointmentState(int appointmentId, UpdateAppointmentDto appointmentDto)
 	{
