@@ -14,7 +14,10 @@ public class StudentRepository : RepositoryBase<Student>, IStudentRepository
 	}
 
 	public async Task<PagedList<Student>> GetAllStudentsAsync(RequestParameters requestParameters, bool trackChanges) =>
-		PagedList<Student>.ToPagedList(await FindAll(trackChanges).ToListAsync(),
+		PagedList<Student>.ToPagedList(await FindAll(trackChanges)
+				.OrderBy(s => s.FirstName)
+				.ThenBy(s => s.LastName)
+				.ToListAsync(),
 			requestParameters.PageNumber,
 			requestParameters.PageSize);
 
@@ -22,6 +25,5 @@ public class StudentRepository : RepositoryBase<Student>, IStudentRepository
 		await FindByCondition(s => s.Id.Equals(studentId), trackChanges)
 			.SingleOrDefaultAsync();
 
-	public void CreateStudent(Student student) => Create(student);
 	public void DeleteStudent(Student student) => Delete(student);
 }

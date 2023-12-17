@@ -14,7 +14,10 @@ public class LecturerRepository : RepositoryBase<Lecturer>, ILecturerRepository
 	}
 
 	public async Task<PagedList<Lecturer>> GetAllLecturersAsync(RequestParameters requestParameters, bool trackChanges) =>
-		PagedList<Lecturer>.ToPagedList(await FindAll(trackChanges).ToListAsync(),
+		PagedList<Lecturer>.ToPagedList(await FindAll(trackChanges)
+				.OrderBy(l => l.FirstName)
+				.ThenBy(l => l.LastName)
+				.ToListAsync(),
 			requestParameters.PageNumber,
 			requestParameters.PageSize);
 
@@ -22,6 +25,5 @@ public class LecturerRepository : RepositoryBase<Lecturer>, ILecturerRepository
 		await FindByCondition(l => l.Id.Equals(lecturerId), trackChanges)
 			.SingleOrDefaultAsync();
 
-	public void CreateLecturer(Lecturer lecturer) => Create(lecturer);
 	public void DeleteLecturer(Lecturer lecturer) => Delete(lecturer);
 }

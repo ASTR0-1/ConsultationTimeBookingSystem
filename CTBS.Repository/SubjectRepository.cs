@@ -19,6 +19,10 @@ public class SubjectRepository : RepositoryBase<Subject>, ISubjectRepository
 			requestParameters.PageNumber,
 			requestParameters.PageSize);
 
+	public async Task<Subject?> GetSubjectAsync(int subjectId, bool trackChanges) =>
+		await FindByCondition(qc => qc.Id.Equals(subjectId), trackChanges)
+			.SingleOrDefaultAsync();
+
 	public void CreateSubject(Subject subject) => Create(subject);
 	public void DeleteSubject(Subject subject) => Delete(subject);
 }
