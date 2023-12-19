@@ -33,6 +33,7 @@ public class AuthenticationController : ControllerBase
 	public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistrationDto)
 	{
 		var user = _mapper.Map<User>(userForRegistrationDto);
+		user.UserName = userForRegistrationDto.Email;
 		var result = await _userManager.CreateAsync(user, userForRegistrationDto.Password);
 
 		if (!result.Succeeded)

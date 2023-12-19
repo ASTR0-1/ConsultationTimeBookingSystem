@@ -7,6 +7,7 @@ using CTBS.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -35,7 +36,8 @@ public static class ServiceExtensions
 
 		builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole<int>), builder.Services);
 		builder.AddEntityFrameworkStores<ApplicationContext>()
-			.AddDefaultTokenProviders();
+			.AddDefaultTokenProviders()
+			.AddRoleManager<RoleManager<IdentityRole<int>>>();
 	}
 
 	public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)

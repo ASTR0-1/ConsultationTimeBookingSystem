@@ -44,7 +44,7 @@ public class AuthenticationManager : IAuthenticationManager
 		new(
 			issuer: _configuration.GetSection("JwtSettings").GetSection("validIssuer").Value,
 			claims: claims,
-			expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration.GetSection("JwtSettings").GetSection("expires")))
+			expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration.GetSection("JwtSettings").GetSection("expires").Value))
 		);
 
 	private async Task<List<Claim>> GetClaims()
