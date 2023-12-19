@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CTBS.Entities;
-public class ApplicationContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
+
+public class ApplicationContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
 	public DbSet<Appointment> Appointments { get; set; } = null!;
 	public DbSet<Lecturer> Lecturers { get; set; } = null!;

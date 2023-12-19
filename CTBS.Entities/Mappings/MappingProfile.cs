@@ -12,8 +12,7 @@ public class MappingProfile : Profile
 {
 	public MappingProfile()
 	{
-		CreateMap<UserForRegistrationDto, Lecturer>();
-		CreateMap<UserForRegistrationDto, Student>();
+		CreateMap<UserForRegistrationDto, User>();
 
 		CreateMap<CreateAppointmentDto, Appointment>();
 

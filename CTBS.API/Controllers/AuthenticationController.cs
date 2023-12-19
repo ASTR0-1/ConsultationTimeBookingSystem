@@ -24,11 +24,11 @@ public class AuthenticationController : ControllerBase
 	}
 
 	/// <summary>
-	/// Registers user from provided user data transfer object.
+	/// Registers userForAuthenticationDto from provided userForAuthenticationDto data transfer object.
 	/// </summary>
-	/// <param name="userForRegistrationDto">Data transfer object to create the user</param>
+	/// <param name="userForRegistrationDto">Data transfer object to create the userForAuthenticationDto</param>
 	/// <returns>Created result.</returns>
-	/// <remarks>HTTP POST: api/Authentication/Register</remarks>
+	/// <remarks>HTTP POST: api/authentication/register</remarks>
 	[HttpPost("register")]
 	public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistrationDto)
 	{
@@ -49,14 +49,14 @@ public class AuthenticationController : ControllerBase
 	}
 
 	/// <summary>
-	/// 
+	/// Sign up userForAuthenticationDto by provided credentials
 	/// </summary>
-	/// <param name="user"></param>
-	/// <returns></returns>
+	/// <param name="userForAuthenticationDto">Data transfer object for sign up.</param>
+	/// <returns>Ok result.</returns>
 	[HttpPost("login")]
-	public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
+	public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto userForAuthenticationDto)
 	{
-		if (!await _authManager.ValidateUserAsync(user))
+		if (!await _authManager.ValidateUserAsync(userForAuthenticationDto))
 			return Unauthorized();
 
 		return Ok(new
