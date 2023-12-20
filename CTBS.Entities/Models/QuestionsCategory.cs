@@ -12,5 +12,5 @@ public class QuestionsCategory
 	public string Name { get; set; }
 	public int ImpactOnAmountOfTime { get; set; }
 
-	public ICollection<Appointment> Appointments { get; set; }
+	public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 }

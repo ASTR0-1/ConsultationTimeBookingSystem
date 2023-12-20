@@ -40,11 +40,13 @@ public class AuthenticationManager : IAuthenticationManager
 		return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 	}
 
-	private JwtSecurityToken GenerateTokeOptions(SigningCredentials signingCredentials, List<Claim> claims) =>
+	private JwtSecurityToken GenerateTokeOptions(SigningCredentials signingCredentials, IEnumerable<Claim> claims) =>
 		new(
 			issuer: _configuration.GetSection("JwtSettings").GetSection("validIssuer").Value,
+			audience: _configuration.GetSection("JwtSettings").GetSection("validAudience").Value,
 			claims: claims,
-			expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration.GetSection("JwtSettings").GetSection("expires").Value))
+			expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration.GetSection("JwtSettings").GetSection("expires").Value)),
+			signingCredentials: signingCredentials
 		);
 
 	private async Task<List<Claim>> GetClaims()

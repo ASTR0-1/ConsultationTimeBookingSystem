@@ -22,6 +22,7 @@ public class Program
 		builder.Services.ConfigureSwagger();
 
 		builder.Services.AddAuthentication();
+		builder.Services.AddAuthorization();
 		builder.Services.ConfigureIdentity();
 		builder.Services.ConfigureJwt(configuration);
 		builder.Services.AddScoped<IAuthenticationManager, AuthenticationManager>();
@@ -43,9 +44,21 @@ public class Program
 			app.UseSwaggerUI();
 		}
 
+		app.UseCors(x => x
+			.AllowAnyOrigin()
+			.AllowAnyMethod()
+			.AllowAnyHeader());
+
 		app.UseHttpsRedirection();
+		app.UseAuthentication();
 		app.UseAuthorization();
 		app.MapControllers();
+
+		app.MapGet("/path", context =>
+		{
+			Console.WriteLine(context.Request.Headers.Authorization);
+			return Task.CompletedTask;
+		});
 
 		await app.RunAsync();
 	}
