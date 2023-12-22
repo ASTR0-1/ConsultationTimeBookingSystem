@@ -1,7 +1,11 @@
-﻿using CTBS.Contracts;
+﻿using AutoMapper;
+using CTBS.Contracts;
+using CTBS.Entities.Models;
 using CTBS.Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using CTBS.Entities.DataTransferObjects.User;
 
 namespace CTBS.API.Controllers;
 
@@ -10,11 +14,15 @@ namespace CTBS.API.Controllers;
 [Authorize]
 public class UserController : ControllerBase
 {
+	private readonly IMapper _mapper;
 	private readonly IRepositoryManager _repository;
+	private readonly UserManager<User> _userManager;
 
-	public UserController(IRepositoryManager repository)
+	public UserController(IRepositoryManager repository, UserManager<User> userManager, IMapper mapper)
 	{
 		_repository = repository;
+		_userManager = userManager;
+		_mapper = mapper;
 	}
 
 	/// <summary>
@@ -30,8 +38,13 @@ public class UserController : ControllerBase
 		{
 			var users = await _repository.User!
 				.GetAllUsersAsync(requestParameters, false);
+			var mappedUsers = _mapper.Map<List<User>, List<GetUserDto>>(users);
 
-			return Ok(users);
+			foreach (var mappedUser in mappedUsers)
+				mappedUser.Role = (await _userManager.GetRolesAsync(users?.FirstOrDefault(u => u?.Id == mappedUser?.Id)))
+					?.FirstOrDefault();
+
+			return Ok(mappedUsers);
 		}
 		catch (Exception)
 		{
@@ -54,7 +67,11 @@ public class UserController : ControllerBase
 			if (user is null)
 				return NotFound($"User with ID: {userId} not found.");
 
-			return Ok(user);
+			var mappedUser = _mapper.Map<User, GetUserDto>(user);
+			mappedUser.Role = (await _userManager.GetRolesAsync(user))
+				?.FirstOrDefault();
+
+			return Ok(mappedUser);
 		}
 		catch (Exception)
 		{

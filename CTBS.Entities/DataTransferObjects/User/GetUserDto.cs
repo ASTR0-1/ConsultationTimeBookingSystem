@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using AutoMapper.Configuration.Annotations;
 
 namespace CTBS.Entities.DataTransferObjects.User;
-internal class GetUserDto
+
+public class GetUserDto
 {
-	[Ignore]
 	public int Id { get; set; }
 
 	public string FirstName { get; set; }
@@ -18,5 +18,5 @@ internal class GetUserDto
 	public ICollection<Models.Appointment> Appointments { get; set; }
 
 	[Ignore]
-	public string Role { get; set; }
+	public string? Role { get; set; }
 }
