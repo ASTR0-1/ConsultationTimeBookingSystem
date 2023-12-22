@@ -36,7 +36,7 @@ public class QuestionsCategoryController : Controller
 			var questionsCategories = await _repository.QuestionsCategory!
 				.GetAllQuestionsCategoriesAsync(requestParameters, false);
 
-			return Ok(questionsCategories);
+			return Ok(new { questionsCategories, questionsCategories.MetaData});
 		}
 		catch (Exception)
 		{

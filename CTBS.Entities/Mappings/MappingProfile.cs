@@ -13,7 +13,13 @@ public class MappingProfile : Profile
 	{
 		CreateMap<UserForRegistrationDto, User>();
 
-		CreateMap<CreateAppointmentDto, Appointment>();
+		CreateMap<CreateAppointmentDto, Appointment>()
+			.ForMember(a => a.Date,
+				opt => opt.MapFrom(src => DateOnly.FromDateTime(src.Date)));
+
+		CreateMap<Appointment, GetAppointmentDto>()
+			.ForMember(a => a.State,
+				opt => opt.MapFrom(src => src.State.ToString()));
 
 		CreateMap<CreateQuestionsCategoryDto, QuestionsCategory>();
 

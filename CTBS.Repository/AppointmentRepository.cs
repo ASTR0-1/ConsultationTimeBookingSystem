@@ -24,14 +24,16 @@ public class AppointmentRepository : RepositoryBase<Appointment>, IAppointmentRe
 
 	public async Task<PagedList<Appointment>> GetLecturerAppointmentsAsync(int lecturerId, RequestParameters requestParameters, bool trackChanges) =>
 		PagedList<Appointment>.ToPagedList(await FindByCondition(a => a.LecturerId.Equals(lecturerId), trackChanges)
-				.OrderByDescending(a => a.Date)
+				.OrderBy(a => a.Priority)
+				.ThenByDescending(a => a.Date)
 				.ToListAsync(),
 			requestParameters.PageNumber,
 			requestParameters.PageSize);
 
 	public async Task<PagedList<Appointment>> GetStudentAppointmentAsync(int studentId, RequestParameters requestParameters, bool trackChanges) =>
 		PagedList<Appointment>.ToPagedList(await FindByCondition(a => a.StudentId.Equals(studentId), trackChanges)
-				.OrderByDescending(a => a.Date)
+				.OrderBy(a => a.Priority)
+				.ThenByDescending(a => a.Date)
 				.ToListAsync(),
 			requestParameters.PageNumber,
 			requestParameters.PageSize);

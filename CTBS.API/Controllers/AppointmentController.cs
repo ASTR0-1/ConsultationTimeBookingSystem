@@ -2,6 +2,7 @@
 using AutoMapper;
 using CTBS.Contracts;
 using CTBS.Entities.DataTransferObjects.Appointment;
+using CTBS.Entities.Enums;
 using CTBS.Entities.Models;
 using CTBS.Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
@@ -38,8 +39,10 @@ public class AppointmentController : ControllerBase
 		{
 			var studentAppointments = await _repository.Appointment!
 				.GetStudentAppointmentAsync(studentId, requestParameters, false);
+			var appointmentDtos = _mapper.Map<PagedList<GetAppointmentDto>>(studentAppointments);
+			appointmentDtos.MetaData = studentAppointments.MetaData;
 
-			return Ok(studentAppointments);
+			return Ok(new { appointments = appointmentDtos, appointmentDtos.MetaData });
 		}
 		catch (Exception)
 		{
@@ -55,7 +58,7 @@ public class AppointmentController : ControllerBase
 	/// <returns>Paginated appointments for lecturer in an ascending order.</returns>
 	/// <remarks>HTTP GET: api/appointments/lecturer/{lecturerId}</remarks>
 	[HttpGet("lecturer/{lecturerId:int}")]
-	[Authorize(Roles = "User")]
+	[Authorize(Roles = "Lecturer")]
 	public async Task<IActionResult> GetLecturerAppointments([Required] int lecturerId,
 		[FromQuery] RequestParameters requestParameters)
 	{
@@ -63,8 +66,10 @@ public class AppointmentController : ControllerBase
 		{
 			var lecturerAppointments = await _repository.Appointment!
 				.GetLecturerAppointmentsAsync(lecturerId, requestParameters, false);
+			var appointmentDtos = _mapper.Map<PagedList<GetAppointmentDto>>(lecturerAppointments);
+			appointmentDtos.MetaData = lecturerAppointments.MetaData;
 
-			return Ok(lecturerAppointments);
+			return Ok(new { appointments = appointmentDtos, appointmentDtos.MetaData });
 		}
 		catch (Exception)
 		{
@@ -86,6 +91,12 @@ public class AppointmentController : ControllerBase
 		{
 			var appointment = _mapper.Map<Appointment>(appointmentDto);
 
+			var questionsCategory = await _repository.QuestionsCategory
+					!.GetQuestionsCategoryAsync(appointmentDto.QuestionsCategoryId, false);
+			if (questionsCategory is null)
+				return BadRequest($"Questions category with provided ID: {appointmentDto.QuestionsCategoryId} not found.");
+			appointment.Priority = questionsCategory.ImpactOnAmountOfTime * appointmentDto.RequestedMinutes;
+
 			_repository.Appointment!.CreateAppointment(appointment);
 			await _repository.SaveAsync();
 
@@ -103,7 +114,16 @@ public class AppointmentController : ControllerBase
 	/// <param name="appointmentId">An appointment id to update.</param>
 	/// <param name="appointmentDto">An appointment data transfer object with appointment state.</param>
 	/// <returns>No content result.</returns>
-	/// <remarks>HTTP PATCH: api/appointments/{appointmentId}</remarks>
+	/// <remarks>
+	/// HTTP PATCH: api/appointments/{appointmentId}
+	///
+	/// Present statuses:
+	///		Pending = 0, 
+	///		Visited = 1, 
+	///		CanceledByStudent = 2, 
+	///		CanceledByLecturer = 3, 
+	///		Skipped = 4
+	/// </remarks>
 	[HttpPatch("{appointmentId:int}")]
 	public async Task<IActionResult> UpdateAppointmentState(int appointmentId, UpdateAppointmentDto appointmentDto)
 	{
@@ -113,6 +133,9 @@ public class AppointmentController : ControllerBase
 			return NotFound($"Appointment with ID: {appointmentId} not found.");
 
 		appointmentToPatch.State = appointmentDto.State;
+		if (appointmentDto.State == AppointmentState.Skipped)
+			appointmentToPatch.Priority *= (int)AppointmentState.Skipped;
+
 		await _repository.SaveAsync();
 
 		return NoContent();

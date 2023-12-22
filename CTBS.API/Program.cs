@@ -54,12 +54,6 @@ public class Program
 		app.UseAuthorization();
 		app.MapControllers();
 
-		app.MapGet("/path", context =>
-		{
-			Console.WriteLine(context.Request.Headers.Authorization);
-			return Task.CompletedTask;
-		});
-
 		await app.RunAsync();
 	}
 
