@@ -21,6 +21,8 @@ public class MappingProfile : Profile
 			.ForMember(a => a.State,
 				opt => opt.MapFrom(src => src.State.ToString()));
 
+		CreateMap<QuestionsCategory, GetQuestionsCategoryDto>();
+
 		CreateMap<CreateQuestionsCategoryDto, QuestionsCategory>();
 
 		CreateMap<GetUserDto, User>().ReverseMap();

@@ -40,9 +40,8 @@ public class AppointmentController : ControllerBase
 			var studentAppointments = await _repository.Appointment!
 				.GetStudentAppointmentAsync(studentId, requestParameters, false);
 			var appointmentDtos = _mapper.Map<PagedList<GetAppointmentDto>>(studentAppointments);
-			appointmentDtos.MetaData = studentAppointments.MetaData;
 
-			return Ok(new { appointments = appointmentDtos, appointmentDtos.MetaData });
+			return Ok(new { appointments = appointmentDtos, studentAppointments.MetaData });
 		}
 		catch (Exception)
 		{
@@ -67,9 +66,8 @@ public class AppointmentController : ControllerBase
 			var lecturerAppointments = await _repository.Appointment!
 				.GetLecturerAppointmentsAsync(lecturerId, requestParameters, false);
 			var appointmentDtos = _mapper.Map<PagedList<GetAppointmentDto>>(lecturerAppointments);
-			appointmentDtos.MetaData = lecturerAppointments.MetaData;
 
-			return Ok(new { appointments = appointmentDtos, appointmentDtos.MetaData });
+			return Ok(new { appointments = appointmentDtos, lecturerAppointments.MetaData });
 		}
 		catch (Exception)
 		{

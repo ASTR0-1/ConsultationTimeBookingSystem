@@ -35,8 +35,9 @@ public class QuestionsCategoryController : Controller
 		{
 			var questionsCategories = await _repository.QuestionsCategory!
 				.GetAllQuestionsCategoriesAsync(requestParameters, false);
+			var questionsCategoryDtos = _mapper.Map<PagedList<GetQuestionsCategoryDto>>(questionsCategories);
 
-			return Ok(new { questionsCategories, questionsCategories.MetaData});
+			return Ok(new { questionsCategoryDtos, questionsCategories.MetaData});
 		}
 		catch (Exception)
 		{
@@ -57,8 +58,9 @@ public class QuestionsCategoryController : Controller
 		{
 			var questionsCategory = await _repository.QuestionsCategory!
 				.GetQuestionsCategoryAsync(questionsCategoryId, false);
+			var questionsCategoryDto = _mapper.Map<GetQuestionsCategoryDto>(questionsCategory);
 
-			return Ok(questionsCategory);
+			return Ok(questionsCategoryDto);
 		}
 		catch (Exception)
 		{
