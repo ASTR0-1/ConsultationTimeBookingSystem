@@ -19,6 +19,4 @@ public class UserForRegistrationDto
 	/// <remarks>Specify whether the user is a Lecturer or a Student.</remarks>
 	[Required(ErrorMessage = "User type is required")]
 	public UserType UserType { get; set; }
-
-	public int? SubjectId { get; set; }
 }

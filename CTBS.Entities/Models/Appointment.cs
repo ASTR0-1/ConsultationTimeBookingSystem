@@ -1,4 +1,5 @@
-﻿using CTBS.Entities.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using CTBS.Entities.Enums;
 
 namespace CTBS.Entities.Models;
 
@@ -10,10 +11,10 @@ public class Appointment
 	public AppointmentState State { get; set; }
 
 	public int? LecturerId { get; set; }
-	public Lecturer? Lecturer { get; set; }
+	public User? Lecturer { get; set; }
 
 	public int? StudentId { get; set; }
-	public Student? Student { get; set; }
+	public User? Student { get; set; }
 
 	public int? QuestionsCategoryId { get; set; }
 	public QuestionsCategory? QuestionsCategory { get; set; }

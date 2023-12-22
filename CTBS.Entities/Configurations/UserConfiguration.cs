@@ -9,15 +9,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CTBS.Entities.Configurations;
 
-public class SubjectConfiguration : IEntityTypeConfiguration<Subject>
+public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-	public void Configure(EntityTypeBuilder<Subject> builder)
+	public void Configure(EntityTypeBuilder<User> builder)
 	{
-		builder.HasKey(s => s.Id);
-		builder.Property(s => s.Name)
+		builder.Property(u => u.FirstName)
 			.IsRequired();
-		builder.HasMany(s => s.Lecturers)
-			.WithOne(l => l.Subject)
-			.HasForeignKey(l => l.SubjectId);
+		builder.Property(u => u.MiddleName)
+			.IsRequired();
+		builder.Property(u => u.LastName)
+			.IsRequired();
 	}
 }

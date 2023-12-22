@@ -28,7 +28,7 @@ public class AppointmentController : ControllerBase
 	/// </summary>
 	/// <param name="studentId">The Student Id to search for appointments.</param>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
-	/// <returns>Paginated appointments for student in ascending order.</returns>
+	/// <returns>Paginated appointments for student in an ascending order.</returns>
 	/// <remarks>HTTP GET: api/appointments/student/{studentId}</remarks>
 	[HttpGet("student/{studentId:int}")]
 	public async Task<IActionResult> GetStudentAppointments([Required] int studentId,
@@ -50,12 +50,12 @@ public class AppointmentController : ControllerBase
 	/// <summary>
 	/// Gets lecturer appointments in an ascending order.
 	/// </summary>
-	/// <param name="lecturerId">The Student Id to search for appointments.</param>
+	/// <param name="lecturerId">The Lecturer Id to search for appointments.</param>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
-	/// <returns>Paginated appointments for student in ascending order.</returns>
+	/// <returns>Paginated appointments for lecturer in an ascending order.</returns>
 	/// <remarks>HTTP GET: api/appointments/lecturer/{lecturerId}</remarks>
 	[HttpGet("lecturer/{lecturerId:int}")]
-	[Authorize(Roles = "Lecturer")]
+	[Authorize(Roles = "User")]
 	public async Task<IActionResult> GetLecturerAppointments([Required] int lecturerId,
 		[FromQuery] RequestParameters requestParameters)
 	{

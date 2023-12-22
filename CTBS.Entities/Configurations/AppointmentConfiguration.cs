@@ -17,9 +17,6 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 		builder.Property(a => a.State)
 			.HasDefaultValue(AppointmentState.Pending)
 			.IsRequired();
-		builder.HasOne(a => a.Lecturer)
-			.WithMany(l => l.Appointments)
-			.HasForeignKey(a => a.LecturerId);
 		builder.HasOne(a => a.Student)
 			.WithMany(s => s.Appointments)
 			.HasForeignKey(a => a.StudentId);

@@ -10,10 +10,8 @@ namespace CTBS.Entities;
 public class ApplicationContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
 	public DbSet<Appointment> Appointments { get; set; } = null!;
-	public DbSet<Lecturer> Lecturers { get; set; } = null!;
 	public DbSet<QuestionsCategory> QuestionsCategories { get; set; } = null!;
-	public DbSet<Student> Students { get; set; } = null!;
-	public DbSet<Subject> Subjects { get; set; } = null!;
+	public DbSet<User> Users { get; set; } = null!;
 
 	public ApplicationContext(DbContextOptions options)
 		: base(options)
@@ -23,11 +21,9 @@ public class ApplicationContext : IdentityDbContext<User, IdentityRole<int>, int
 	{
 		base.OnModelCreating(builder);
 
+		builder.ApplyConfiguration(new UserConfiguration());
 		builder.ApplyConfiguration(new AppointmentConfiguration());
-		builder.ApplyConfiguration(new LecturerConfiguration());
 		builder.ApplyConfiguration(new QuestionsCategoryConfiguration());
-		builder.ApplyConfiguration(new StudentConfiguration());
-		builder.ApplyConfiguration(new SubjectConfiguration());
 	}
 
 	protected override void ConfigureConventions(ModelConfigurationBuilder builder)

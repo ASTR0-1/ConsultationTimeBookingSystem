@@ -60,8 +60,11 @@ public class AuthenticationController : ControllerBase
 		if (!await _authManager.ValidateUserAsync(userForAuthenticationDto))
 			return Unauthorized();
 
+		var user = await _userManager.FindByEmailAsync(userForAuthenticationDto.Email);
+
 		return Ok(new
 		{
+			UserId = user.Id,
 			Token = await _authManager.CreateTokenAsync()
 		});
 	}

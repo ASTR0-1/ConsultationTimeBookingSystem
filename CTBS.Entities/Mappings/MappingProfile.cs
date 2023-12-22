@@ -2,9 +2,8 @@
 using CTBS.Entities.DataTransferObjects.Appointment;
 using CTBS.Entities.DataTransferObjects.Authentication;
 using CTBS.Entities.DataTransferObjects.QuestionsCategory;
-using CTBS.Entities.DataTransferObjects.Subject;
+using CTBS.Entities.DataTransferObjects.User;
 using CTBS.Entities.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace CTBS.Entities.Mappings;
 
@@ -18,6 +17,6 @@ public class MappingProfile : Profile
 
 		CreateMap<CreateQuestionsCategoryDto, QuestionsCategory>();
 
-		CreateMap<CreateSubjectDto, Subject>();
+		CreateMap<GetUserDto, User>().ReverseMap();
 	}
 }
