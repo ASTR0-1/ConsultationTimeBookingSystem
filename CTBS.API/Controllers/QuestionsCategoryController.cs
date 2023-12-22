@@ -33,8 +33,30 @@ public class QuestionsCategoryController : Controller
 	{
 		try
 		{
-			var questionsCategory = await _repository.QuestionsCategory!
+			var questionsCategories = await _repository.QuestionsCategory!
 				.GetAllQuestionsCategoriesAsync(requestParameters, false);
+
+			return Ok(questionsCategories);
+		}
+		catch (Exception)
+		{
+			return BadRequest();
+		}
+	}
+
+	/// <summary>
+	/// Gets question category by provided id.
+	/// </summary>
+	/// <param name="questionsCategoryId">The questions category id to retrieve an information.</param>
+	/// <returns>Question category by provided id.</returns>
+	/// <remarks>HTTP GET: api/questionsCategories/{questionsCategoryId}</remarks>
+	[HttpGet("{questionsCategoryId:int}")]
+	public async Task<IActionResult> GetById(int questionsCategoryId)
+	{
+		try
+		{
+			var questionsCategory = await _repository.QuestionsCategory!
+				.GetQuestionsCategoryAsync(questionsCategoryId, false);
 
 			return Ok(questionsCategory);
 		}
