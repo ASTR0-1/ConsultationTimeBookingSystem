@@ -1,7 +1,7 @@
-﻿using CTBS.Contracts;
-using CTBS.Entities.Models;
-using CTBS.Entities.RequestFeatures;
-using CTBS.Repository;
+﻿using CTBS.Application.Interfaces;
+using CTBS.Application.RequestFeatures;
+using CTBS.Domain.Models;
+using CTBS.Infrastructure.Persistence.Repositories;
 using CTBS.Tests.UnitTests.TestFixtures;
 using Xunit;
 

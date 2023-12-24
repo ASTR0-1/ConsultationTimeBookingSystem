@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using CTBS.Contracts;
-using CTBS.Entities.Models;
-using CTBS.Entities.RequestFeatures;
+using CTBS.Application.DataTransferObjects.User;
+using CTBS.Application.Interfaces;
+using CTBS.Application.RequestFeatures;
+using CTBS.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CTBS.Entities.DataTransferObjects.User;
 
 namespace CTBS.API.Controllers;
 
@@ -26,7 +26,7 @@ public class UserController : ControllerBase
 	}
 
 	/// <summary>
-	/// Gets all users ordered by first and last name ascending.
+	///     Gets all users ordered by first and last name ascending.
 	/// </summary>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
 	/// <returns>Paginated users ordered by first and last name ascending.</returns>
@@ -41,7 +41,8 @@ public class UserController : ControllerBase
 			var mappedUsers = _mapper.Map<List<User>, List<GetUserDto>>(users);
 
 			foreach (var mappedUser in mappedUsers)
-				mappedUser.Role = (await _userManager.GetRolesAsync(users?.FirstOrDefault(u => u?.Id == mappedUser?.Id)))
+				mappedUser.Role =
+					(await _userManager.GetRolesAsync(users?.FirstOrDefault(u => u?.Id == mappedUser?.Id)))
 					?.FirstOrDefault();
 
 			return Ok(mappedUsers);
@@ -53,7 +54,7 @@ public class UserController : ControllerBase
 	}
 
 	/// <summary>
-	/// Gets user by id.
+	///     Gets user by id.
 	/// </summary>
 	/// <param name="userId">User id to retrieve information.</param>
 	/// <returns>User by provided id.</returns>
@@ -80,7 +81,7 @@ public class UserController : ControllerBase
 	}
 
 	/// <summary>
-	/// Deletes user.
+	///     Deletes user.
 	/// </summary>
 	/// <param name="userId">User id to delete.</param>
 	/// <returns>No content result.</returns>

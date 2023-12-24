@@ -1,5 +1,5 @@
 using System.Net.Http.Headers;
-using CTBS.Entities.RequestFeatures;
+using CTBS.Application.RequestFeatures;
 using CTBS.Tests.IntegrationTests.TestConfigurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,10 +24,12 @@ public class UserControllerTests : IClassFixture<ApplicationFactory>
 	public async Task GetAll_ReturnsSuccessStatusCode()
 	{
 		// Arrange
-		var requestParameters = new RequestParameters { PageSize = 10, PageNumber = 1 };
+		var requestParameters = new RequestParameters {PageSize = 10, PageNumber = 1};
 
 		// Act
-		var response = await _client.GetAsync($"/api/users?pageSize={requestParameters.PageSize}&pageNumber={requestParameters.PageNumber}");
+		var response =
+			await _client.GetAsync(
+				$"/api/users?pageSize={requestParameters.PageSize}&pageNumber={requestParameters.PageNumber}");
 
 		// Assert
 		response.EnsureSuccessStatusCode();

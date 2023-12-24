@@ -1,10 +1,8 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
-using CTBS.Entities;
-using CTBS.Entities.DataTransferObjects.Appointment;
-using CTBS.Entities.Enums;
-using CTBS.Entities.Models;
+using CTBS.Application.DataTransferObjects.Appointment;
+using CTBS.Domain.Enums;
 using CTBS.Tests.IntegrationTests.TestConfigurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +32,6 @@ public class AppointmentControllerTests : IClassFixture<ApplicationFactory>
 
 		// Assert
 		Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
 	}
 
 	[Fact]

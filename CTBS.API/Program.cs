@@ -1,9 +1,9 @@
 using CTBS.API.Extensions;
-using CTBS.API.Utility;
-using CTBS.Contracts;
-using CTBS.Entities.Enums;
-using CTBS.Entities.Mappings;
-using CTBS.Entities.Models;
+using CTBS.Application.Interfaces;
+using CTBS.Application.Mappings;
+using CTBS.Domain.Enums;
+using CTBS.Infrastructure;
+using CTBS.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace CTBS.API;
@@ -23,12 +23,12 @@ public class Program
 
 		builder.Services.AddAuthentication();
 		builder.Services.AddAuthorization();
-		builder.Services.ConfigureIdentity();
+
+		builder.Services.ConfigureInfrastructure(configuration);
+
 		builder.Services.ConfigureJwt(configuration);
 		builder.Services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
-		builder.Services.ConfigureSqlContext(configuration);
-		builder.Services.ConfigureRepositoryManager();
 		builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 		var app = builder.Build();
@@ -61,7 +61,7 @@ public class Program
 	{
 		if (!await roleManager.RoleExistsAsync(UserType.Lecturer.ToString()))
 			await roleManager.CreateAsync(new IdentityRole<int>(UserType.Lecturer.ToString()));
-		
+
 		if (!await roleManager.RoleExistsAsync(UserType.Student.ToString()))
 			await roleManager.CreateAsync(new IdentityRole<int>(UserType.Student.ToString()));
 	}

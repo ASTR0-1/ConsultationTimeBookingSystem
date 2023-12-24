@@ -1,6 +1,6 @@
-﻿using CTBS.Contracts;
-using CTBS.Entities.RequestFeatures;
-using CTBS.Repository;
+﻿using CTBS.Application.Interfaces;
+using CTBS.Application.RequestFeatures;
+using CTBS.Infrastructure.Persistence.Repositories;
 using CTBS.Tests.UnitTests.TestFixtures;
 using Xunit;
 
@@ -63,10 +63,10 @@ public class UserRepositoryTests : IClassFixture<UserRepositorySeedDataFixture>
 	{
 		// Arrange
 		var user = await _userRepository.GetUserAsync(300, true);
-		_userRepository.DeleteUser(user);
-		await _fixture.ApplicationContext.SaveChangesAsync();
 
 		// Act
+		_userRepository.DeleteUser(user);
+		await _fixture.ApplicationContext.SaveChangesAsync();
 		var result = await _fixture.ApplicationContext.Users.FindAsync(user.Id);
 
 		// Assert

@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using CTBS.Contracts;
-using CTBS.Entities.DataTransferObjects.Authentication;
-using CTBS.Entities.Enums;
-using CTBS.Entities.Models;
+using CTBS.Application.DataTransferObjects.Authentication;
+using CTBS.Application.Interfaces;
+using CTBS.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +11,9 @@ namespace CTBS.API.Controllers;
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
+	private readonly IAuthenticationManager _authManager;
 	private readonly IMapper _mapper;
 	private readonly UserManager<User> _userManager;
-	private readonly IAuthenticationManager _authManager;
 
 	public AuthenticationController(IMapper mapper, UserManager<User> userManager, IAuthenticationManager authManager)
 	{
@@ -24,7 +23,7 @@ public class AuthenticationController : ControllerBase
 	}
 
 	/// <summary>
-	/// Registers userForAuthenticationDto from provided userForAuthenticationDto data transfer object.
+	///     Registers userForAuthenticationDto from provided userForAuthenticationDto data transfer object.
 	/// </summary>
 	/// <param name="userForRegistrationDto">Data transfer object to create the userForAuthenticationDto</param>
 	/// <returns>Created result.</returns>
@@ -50,7 +49,7 @@ public class AuthenticationController : ControllerBase
 	}
 
 	/// <summary>
-	/// Sign up userForAuthenticationDto by provided credentials
+	///     Sign up userForAuthenticationDto by provided credentials
 	/// </summary>
 	/// <param name="userForAuthenticationDto">Data transfer object for sign up.</param>
 	/// <returns>Ok result.</returns>

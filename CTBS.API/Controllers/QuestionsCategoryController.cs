@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CTBS.Contracts;
-using CTBS.Entities.DataTransferObjects.QuestionsCategory;
-using CTBS.Entities.Models;
-using CTBS.Entities.RequestFeatures;
+using CTBS.Application.DataTransferObjects.QuestionsCategory;
+using CTBS.Application.Interfaces;
+using CTBS.Application.RequestFeatures;
+using CTBS.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,8 +13,8 @@ namespace CTBS.API.Controllers;
 [Authorize]
 public class QuestionsCategoryController : Controller
 {
-	private readonly IRepositoryManager _repository;
 	private readonly IMapper _mapper;
+	private readonly IRepositoryManager _repository;
 
 	public QuestionsCategoryController(IRepositoryManager repository, IMapper mapper)
 	{
@@ -23,7 +23,7 @@ public class QuestionsCategoryController : Controller
 	}
 
 	/// <summary>
-	/// Gets all question categories ordered by id ascending.
+	///     Gets all question categories ordered by id ascending.
 	/// </summary>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
 	/// <returns>Paginated questions categories ordered by name ascending.</returns>
@@ -37,7 +37,7 @@ public class QuestionsCategoryController : Controller
 				.GetAllQuestionsCategoriesAsync(requestParameters, false);
 			var questionsCategoryDtos = _mapper.Map<PagedList<GetQuestionsCategoryDto>>(questionsCategories);
 
-			return Ok(new { questionsCategoryDtos, questionsCategories.MetaData});
+			return Ok(new {questionsCategoryDtos, questionsCategories.MetaData});
 		}
 		catch (Exception)
 		{
@@ -46,7 +46,7 @@ public class QuestionsCategoryController : Controller
 	}
 
 	/// <summary>
-	/// Gets question category by provided id.
+	///     Gets question category by provided id.
 	/// </summary>
 	/// <param name="questionsCategoryId">The questions category id to retrieve an information.</param>
 	/// <returns>Question category by provided id.</returns>
@@ -69,7 +69,7 @@ public class QuestionsCategoryController : Controller
 	}
 
 	/// <summary>
-	/// Creates questions category from provided questions category data transfer object.
+	///     Creates questions category from provided questions category data transfer object.
 	/// </summary>
 	/// <param name="questionsCategoryDto">Data transfer object to create the questions category.</param>
 	/// <returns>No content result.</returns>
@@ -93,7 +93,7 @@ public class QuestionsCategoryController : Controller
 	}
 
 	/// <summary>
-	/// Deletes questions category by provided id.
+	///     Deletes questions category by provided id.
 	/// </summary>
 	/// <param name="questionsCategoryId">The questions category id to delete.</param>
 	/// <returns>No content result.</returns>
@@ -103,7 +103,8 @@ public class QuestionsCategoryController : Controller
 	{
 		try
 		{
-			var questionsCategoryToDelete = await _repository.QuestionsCategory!.GetQuestionsCategoryAsync(questionsCategoryId, true);
+			var questionsCategoryToDelete =
+				await _repository.QuestionsCategory!.GetQuestionsCategoryAsync(questionsCategoryId, true);
 
 			if (questionsCategoryToDelete is null)
 				return NotFound($"Questions category with ID: {questionsCategoryId} not found.");

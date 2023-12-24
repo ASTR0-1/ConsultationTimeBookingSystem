@@ -12,20 +12,14 @@
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="12.0.1" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.14" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.14" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.14">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\CTBS.Contracts\CTBS.Contracts.csproj" />
-		<ProjectReference Include="..\CTBS.Entities\CTBS.Entities.csproj" />
-		<ProjectReference Include="..\CTBS.Repository\CTBS.Repository.csproj" />
+	  <ProjectReference Include="..\CTBS.Application\CTBS.Application.csproj" />
+	  <ProjectReference Include="..\CTBS.Infrastructure\CTBS.Infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>

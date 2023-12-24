@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
-using CTBS.Contracts;
-using CTBS.Entities.DataTransferObjects.Appointment;
-using CTBS.Entities.Enums;
-using CTBS.Entities.Models;
-using CTBS.Entities.RequestFeatures;
+using CTBS.Application.DataTransferObjects.Appointment;
+using CTBS.Application.Interfaces;
+using CTBS.Application.RequestFeatures;
+using CTBS.Domain.Enums;
+using CTBS.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +15,8 @@ namespace CTBS.API.Controllers;
 [Authorize]
 public class AppointmentController : ControllerBase
 {
-	private readonly IRepositoryManager _repository;
 	private readonly IMapper _mapper;
+	private readonly IRepositoryManager _repository;
 
 	public AppointmentController(IRepositoryManager repository, IMapper mapper)
 	{
@@ -25,7 +25,7 @@ public class AppointmentController : ControllerBase
 	}
 
 	/// <summary>
-	/// Gets student appointments in an ascending order.
+	///     Gets student appointments in an ascending order.
 	/// </summary>
 	/// <param name="studentId">The Student Id to search for appointments.</param>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
@@ -41,7 +41,7 @@ public class AppointmentController : ControllerBase
 				.GetStudentAppointmentAsync(studentId, requestParameters, false);
 			var appointmentDtos = _mapper.Map<PagedList<GetAppointmentDto>>(studentAppointments);
 
-			return Ok(new { appointments = appointmentDtos, studentAppointments.MetaData });
+			return Ok(new {appointments = appointmentDtos, studentAppointments.MetaData});
 		}
 		catch (Exception)
 		{
@@ -50,7 +50,7 @@ public class AppointmentController : ControllerBase
 	}
 
 	/// <summary>
-	/// Gets lecturer appointments in an ascending order.
+	///     Gets lecturer appointments in an ascending order.
 	/// </summary>
 	/// <param name="lecturerId">The Lecturer Id to search for appointments.</param>
 	/// <param name="requestParameters">The request parameters to apply pagination.</param>
@@ -67,7 +67,7 @@ public class AppointmentController : ControllerBase
 				.GetLecturerAppointmentsAsync(lecturerId, requestParameters, false);
 			var appointmentDtos = _mapper.Map<PagedList<GetAppointmentDto>>(lecturerAppointments);
 
-			return Ok(new { appointments = appointmentDtos, lecturerAppointments.MetaData });
+			return Ok(new {appointments = appointmentDtos, lecturerAppointments.MetaData});
 		}
 		catch (Exception)
 		{
@@ -76,7 +76,7 @@ public class AppointmentController : ControllerBase
 	}
 
 	/// <summary>
-	/// Creates appointment from provided appointment data transfer object.
+	///     Creates appointment from provided appointment data transfer object.
 	/// </summary>
 	/// <param name="appointmentDto">Data transfer object to create an appointment.</param>
 	/// <returns>No content result.</returns>
@@ -90,9 +90,10 @@ public class AppointmentController : ControllerBase
 			var appointment = _mapper.Map<Appointment>(appointmentDto);
 
 			var questionsCategory = await _repository.QuestionsCategory
-					!.GetQuestionsCategoryAsync(appointmentDto.QuestionsCategoryId, false);
+				!.GetQuestionsCategoryAsync(appointmentDto.QuestionsCategoryId, false);
 			if (questionsCategory is null)
-				return BadRequest($"Questions category with provided ID: {appointmentDto.QuestionsCategoryId} not found.");
+				return BadRequest(
+					$"Questions category with provided ID: {appointmentDto.QuestionsCategoryId} not found.");
 			appointment.Priority = questionsCategory.ImpactOnAmountOfTime * appointmentDto.RequestedMinutes;
 
 			_repository.Appointment!.CreateAppointment(appointment);
@@ -107,20 +108,19 @@ public class AppointmentController : ControllerBase
 	}
 
 	/// <summary>
-	/// Updates an appointment state.
+	///     Updates an appointment state.
 	/// </summary>
 	/// <param name="appointmentId">An appointment id to update.</param>
 	/// <param name="appointmentDto">An appointment data transfer object with appointment state.</param>
 	/// <returns>No content result.</returns>
 	/// <remarks>
-	/// HTTP PATCH: api/appointments/{appointmentId}
-	///
-	/// Present statuses:
-	///		Pending = 0, 
-	///		Visited = 1, 
-	///		CanceledByStudent = 2, 
-	///		CanceledByLecturer = 3, 
-	///		Skipped = 4
+	///     HTTP PATCH: api/appointments/{appointmentId}
+	///     Present statuses:
+	///     Pending = 0,
+	///     Visited = 1,
+	///     CanceledByStudent = 2,
+	///     CanceledByLecturer = 3,
+	///     Skipped = 4
 	/// </remarks>
 	[HttpPatch("{appointmentId:int}")]
 	public async Task<IActionResult> UpdateAppointmentState(int appointmentId, UpdateAppointmentDto appointmentDto)
@@ -132,7 +132,7 @@ public class AppointmentController : ControllerBase
 
 		appointmentToPatch.State = appointmentDto.State;
 		if (appointmentDto.State == AppointmentState.Skipped)
-			appointmentToPatch.Priority *= (int)AppointmentState.Skipped;
+			appointmentToPatch.Priority *= (int) AppointmentState.Skipped;
 
 		await _repository.SaveAsync();
 
