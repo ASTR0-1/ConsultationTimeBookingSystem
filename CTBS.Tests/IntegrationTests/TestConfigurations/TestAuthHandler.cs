@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using CTBS.Entities.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CTBS.Tests.IntegrationTests.TestConfigurations;
@@ -31,27 +21,31 @@ public class TestAuthHandler
 	{
 		var claims = new List<Claim>
 		{
-			new (ClaimTypes.Name, "User")
+			new(ClaimTypes.Name, "User")
 		};
 
 		claims.AddRange(new List<Claim>
 		{
 			new(ClaimTypes.Role, "Lecturer"),
-			new(ClaimTypes.Role, "Student"),
+			new(ClaimTypes.Role, "Student")
 		});
 
 		return claims;
 	}
 
-	private static JwtSecurityToken GenerateTokeOptions(SigningCredentials signingCredentials, IEnumerable<Claim> claims,
-		IConfiguration configuration) =>
-		new(
-			issuer: configuration.GetSection("JwtSettings").GetSection("validIssuer").Value,
-			audience: configuration.GetSection("JwtSettings").GetSection("validAudience").Value,
-			claims: claims,
-			expires: DateTime.Now.AddMinutes(Convert.ToDouble(configuration.GetSection("JwtSettings").GetSection("expires").Value)),
+	private static JwtSecurityToken GenerateTokeOptions(SigningCredentials signingCredentials,
+		IEnumerable<Claim> claims,
+		IConfiguration configuration)
+	{
+		return new JwtSecurityToken(
+			configuration.GetSection("JwtSettings").GetSection("validIssuer").Value,
+			configuration.GetSection("JwtSettings").GetSection("validAudience").Value,
+			claims,
+			expires: DateTime.Now.AddMinutes(
+				Convert.ToDouble(configuration.GetSection("JwtSettings").GetSection("expires").Value)),
 			signingCredentials: signingCredentials
 		);
+	}
 
 	private static SigningCredentials GetSigningCredentials(IConfiguration configuration)
 	{

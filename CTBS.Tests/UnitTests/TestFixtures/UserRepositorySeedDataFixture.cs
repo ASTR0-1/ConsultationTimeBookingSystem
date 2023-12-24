@@ -1,5 +1,5 @@
-﻿using CTBS.Entities;
-using CTBS.Entities.Models;
+﻿using CTBS.Domain.Models;
+using CTBS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace CTBS.Tests.UnitTests.TestFixtures;

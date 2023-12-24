@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CTBS.API\CTBS.API.csproj" />
-      <ProjectReference Include="..\CTBS.Entities\CTBS.Entities.csproj" />
     </ItemGroup>
 
     <ItemGroup>
